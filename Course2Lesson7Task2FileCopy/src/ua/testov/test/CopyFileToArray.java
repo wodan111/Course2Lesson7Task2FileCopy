@@ -44,8 +44,6 @@ public class CopyFileToArray implements Runnable {
 	public void run() {
 		Thread thrTwo = new Thread(new SaveInfoToFile(this.out, this.action));
 		thrTwo.start();
-//		Thread thrThree = new Thread(new CopyProgress((double) in.length(), this.actionTwo));
-//		thrThree.start();
 		try {
 			copyFileToArr();
 		} catch (IOException e) {
