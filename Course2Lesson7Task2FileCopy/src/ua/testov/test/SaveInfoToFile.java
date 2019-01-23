@@ -18,15 +18,23 @@ public class SaveInfoToFile implements Runnable {
 		this.a = a;
 	}
 
+	public void saveInfoToFile() throws IOException {
+		try (FileOutputStream fos = new FileOutputStream(file, true)) {
+			fos.write(a.getArray());
+		} catch (IOException e) {
+			throw e;
+		}
+	}
 
 	@Override
 	public void run() {
 		for (; !a.isStop();) {
-			try (FileOutputStream fos = new FileOutputStream(file, true)) {
-				fos.write(a.getArray());
+			try {
+				saveInfoToFile();
 			} catch (IOException e) {
-				e.printStackTrace();;
+				e.printStackTrace();
 			}
 		}
+		System.out.println("Close Save");
 	}
 }

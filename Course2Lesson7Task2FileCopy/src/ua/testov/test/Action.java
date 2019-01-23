@@ -41,4 +41,4 @@ public class Action {
 	public void setStop(boolean stop) {
 		this.stop = stop;
 	}
-}
+} 

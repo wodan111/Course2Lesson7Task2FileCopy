@@ -5,31 +5,53 @@ import java.io.FileInputStream;
 import java.io.IOException;
 
 public class CopyFileToArray implements Runnable {
-	private File file;
-	private Action a;
+	private File in;
+	private File out;
+	private Action action;
 
 	public CopyFileToArray() {
 		super();
 	}
 
-	public CopyFileToArray(File file, Action a) {
+	public CopyFileToArray(File in, File out, Action action) {
 		super();
-		this.file = file;
-		this.a = a;
+		this.in = in;
+		this.out = out;
+		this.action = action;
 	}
 
+	public void copyFileToArr() throws IOException {
+		byte[] buffer = new byte[1024 * 1024];
+		int count = 0;
 
+		try (FileInputStream fis = new FileInputStream(in);) {
+
+//			double x = 0;
+//			long y = in.length();
+			for (; (count = fis.read(buffer)) > 0;) {
+//				x=x+(double)count;
+//			    System.out.println(String.format("%.3f",x/(double)y*100));
+				byte[] arrCopy = new byte[count];
+				System.arraycopy(buffer, 0, arrCopy, 0, count);
+				this.action.setArray(arrCopy);
+			}
+		} catch (IOException e) {
+			throw e;
+		}
+	}
 
 	@Override
 	public void run() {
-		byte[] buffer = new byte[1024 * 1024];
-		try (FileInputStream fis = new FileInputStream(file);) {
-			for (; (fis.read(buffer)) > 0;) {
-				this.a.setArray(buffer);
-			}
+		Thread thrTwo = new Thread(new SaveInfoToFile(this.out, this.action));
+		thrTwo.start();
+//		Thread thrThree = new Thread(new CopyProgress((double) in.length(), this.actionTwo));
+//		thrThree.start();
+		try {
+			copyFileToArr();
 		} catch (IOException e) {
-			e.printStackTrace();;
+			e.printStackTrace();
 		}
-		a.setStop(true);
+		action.setStop(true);
+		System.out.println("Close Copy");
 	}
 }

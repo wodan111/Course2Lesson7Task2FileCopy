@@ -14,11 +14,12 @@ public class Main {
 			e.printStackTrace();
 		}
 		Action action = new Action();
-		CopyFileToArray copy = new CopyFileToArray(workFile, action);
-		SaveInfoToFile paste = new SaveInfoToFile(copyFile, action);
+		CopyFileToArray copy = new CopyFileToArray(workFile, copyFile, action);
+		// SaveInfoToFile paste = new SaveInfoToFile(copyFile, action);
 		Thread thrOne = new Thread(copy);
-		Thread thrTwo = new Thread(paste);
+		// Thread thrTwo = new Thread(paste);
 		thrOne.start();
-		thrTwo.start();
+		// thrTwo.start();
+		System.out.println("Close Main");
 	}
 }
