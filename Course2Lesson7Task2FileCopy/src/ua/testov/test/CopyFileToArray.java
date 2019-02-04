@@ -29,7 +29,7 @@ public class CopyFileToArray implements Runnable {
 		int count = 0;
 
 		if (in.exists()==false) {
-			this.action.setArray(buffer,0);
+			this.action.setArray(buffer);
 			throw new FileNotFoundException();
 		} else {
 			try (FileInputStream fis = new FileInputStream(in);) {
@@ -41,7 +41,7 @@ public class CopyFileToArray implements Runnable {
 //			    System.out.println(String.format("%.3f",x/(double)y*100));
 					byte[] arrCopy = new byte[count];
 					System.arraycopy(buffer, 0, arrCopy, 0, count);
-					this.action.setArray(arrCopy, (double)count);
+					this.action.setArray(arrCopy);
 				}
 			} catch (IOException e) {
 				throw e;
@@ -53,8 +53,8 @@ public class CopyFileToArray implements Runnable {
 	public void run() {
 		Thread thrTwo = new Thread(new SaveInfoToFile(this.out, this.action));
 		thrTwo.start();
-		Thread thrThree = new Thread(new CopyProgress((double) in.length(), this.action));
-		thrThree.start();
+//		Thread thrThree = new Thread(new CopyProgress((double) in.length(), this.action));
+//		thrThree.start();
 		try {
 			copyFileToArr();
 		} catch (IOException e) {
