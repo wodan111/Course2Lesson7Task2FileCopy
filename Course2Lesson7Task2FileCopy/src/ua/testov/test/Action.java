@@ -2,7 +2,8 @@ package ua.testov.test;
 
 public class Action {
 	private byte[] buffer;
-	private boolean turn = false;
+	private double count;
+	private int turn = 1;
 	private boolean stop = false;
 
 	public Action() {
@@ -10,27 +11,53 @@ public class Action {
 	}
 
 	public synchronized byte[] getArray() {
-		for (; turn == false;) {
+		byte[] temp = null;
+		if (turn == 3) {
+			temp = this.buffer;
+		} else {
 			try {
-				wait();
+				for (;;) {
+					wait();
+				}
 			} catch (InterruptedException e) {
 			}
 		}
-		byte[] temp = this.buffer;
-		turn = false;
+		turn = 1;
 		notifyAll();
 		return temp;
 	}
 
-	public synchronized void setArray(byte[] buffer) {
-		for (; turn == true;) {
+	public synchronized double getCount() {
+		double temp = 0;
+		if (turn == 2) {
+			temp = this.count;
+		} else {
 			try {
-				wait();
+				for (;;) {
+					wait();
+				}
 			} catch (InterruptedException e) {
 			}
 		}
-		this.buffer = buffer;
-		turn = true;
+		turn = 3;
+		notifyAll();
+		return temp;
+	}
+
+	public synchronized void setArray(byte[] buffer, double count) {
+		if (turn == 1) {
+			this.buffer = buffer;
+			this.count = count;
+		} else {
+			try {
+				for (;;) {
+					wait();
+				}
+			} catch (InterruptedException e) {
+			}
+
+		}
+		turn = 2;
 		notifyAll();
 	}
 
@@ -41,4 +68,4 @@ public class Action {
 	public void setStop(boolean stop) {
 		this.stop = stop;
 	}
-} 
+}
