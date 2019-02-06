@@ -2,6 +2,7 @@ package ua.testov.test;
 
 public class Action {
 	private byte[] buffer;
+	private String str;
 	private boolean turn = false;
 	private boolean stop = false;
 
@@ -17,12 +18,13 @@ public class Action {
 			}
 		}
 		byte[] temp = this.buffer;
+		System.out.println(str);
 		turn = false;
 		notifyAll();
 		return temp;
 	}
 
-	public synchronized void setArray(byte[] buffer) {
+	public synchronized void setArray(byte[] buffer, String str) {
 		for (; turn == true;) {
 			try {
 				wait();
@@ -30,6 +32,7 @@ public class Action {
 			}
 		}
 		this.buffer = buffer;
+		this.str = str;
 		turn = true;
 		notifyAll();
 	}
@@ -41,4 +44,4 @@ public class Action {
 	public void setStop(boolean stop) {
 		this.stop = stop;
 	}
-} 
+}

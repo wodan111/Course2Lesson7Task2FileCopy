@@ -23,7 +23,7 @@ public class SaveInfoToFile implements Runnable {
 			fos.write(a.getArray());
 		} catch (IOException e) {
 			throw e;
-		}
+		} 
 	}
 
 	@Override
